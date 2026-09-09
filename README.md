@@ -1,6 +1,7 @@
 # Fast Modal Dynamics for Hairy and Scaly Surfaces on the GPU
 
 https://dl.acm.org/doi/full/10.1145/3799825.3818761
+
 ![Demo](assets/cover.gif)
 
 
