@@ -2,6 +2,7 @@ import numpy as np
 import torch 
 import warp as wp
 import time
+import nvtx
 
 from dyrt_params import *
 from rodrigues_rotation import *
@@ -18,7 +19,8 @@ def wp_update_all_instances(bm, bi, ix, frame_i):
     num_boundary_v = bi.boundary_v.shape[0]
     EV_LENGTH = wp.constant(bi.boundary_v.shape[0]*3)
     NUM_MODES = wp.constant(bi.n_modes)
-
+    
+    @nvtx.annotate()
     @wp.kernel
     def wp_get_modal_displacement(
         eigenvectors: wp.array2d(dtype=wp.float32),  # bi.v.shape[0]*3,bi.n_modes
@@ -43,7 +45,7 @@ def wp_update_all_instances(bm, bi, ix, frame_i):
                     block_dim=128, 
                     device=DEVICE)
 
-    
+    @nvtx.annotate()
     @wp.kernel
     def wp_get_rot_transpose(
             instances_face_index: wp.array(dtype=wp.int32),
@@ -73,7 +75,7 @@ def wp_update_all_instances(bm, bi, ix, frame_i):
               outputs=[ix.rot_T], 
               device=DEVICE)
      
-
+    @nvtx.annotate()
     @wp.kernel
     def wp_get_face_points(
         face_indices: wp.array(dtype=wp.int32),
@@ -95,6 +97,7 @@ def wp_update_all_instances(bm, bi, ix, frame_i):
               outputs=[ix.face_points], 
               device=DEVICE)
     
+    @nvtx.annotate()
     @wp.kernel
     def wp_compute_new_spikes(
         modal_d: wp.array2d(dtype=wp.vec3), # ix.num_instances,bi.v.shape[0],3
@@ -132,6 +135,7 @@ def wp_dyrt(bm, bi, ix, frame_i):
     if frame_i >= globals.MOVE_FRAMES + 2:
         frame_i = globals.MOVE_FRAMES + 1
 
+    @nvtx.annotate()
     @wp.kernel
     def wp_interpolate_acceleration(
         face_indices: wp.array(dtype=wp.int32),
@@ -159,6 +163,7 @@ def wp_dyrt(bm, bi, ix, frame_i):
             outputs=[ix.accelerations], 
             device=DEVICE)
 
+    @nvtx.annotate()
     @wp.kernel
     def wp_get_third_terms(
         instance_accelerations: wp.array(dtype=wp.vec3), # ix.num_instances
@@ -176,6 +181,7 @@ def wp_dyrt(bm, bi, ix, frame_i):
 
     c1,c2,c3 = bi.IIR_params
 
+    @nvtx.annotate()
     @wp.kernel
     def get_q_new(
         c1: wp.types.vector(length=bi.n_modes, dtype=wp.float32),

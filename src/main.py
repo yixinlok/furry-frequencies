@@ -4,6 +4,7 @@ import numpy as np
 import warp as wp
 import time, os, sys
 import cProfile, pstats
+import nvtx
 
 import globals
 from base_mesh import *
@@ -34,6 +35,7 @@ ix = create_instances_object(bm, bi)
 main algorithm
 '''
 precompute_bm_frames(bm, globals.MOVE_FRAMES, globals.MOVE)
+@nvtx.annotate()
 def advance_frame(frame_i):
     wp_update_all_instances(bm, bi, ix, frame_i)
     wp_dyrt(bm, bi, ix, frame_i)
