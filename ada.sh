@@ -17,6 +17,5 @@ export PYTHONUNBUFFERED=1
 
 conda activate gpuenv
 python src/main.py
-
 cd /scratch/thirty/yixinlok
 ls

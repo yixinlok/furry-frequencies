@@ -5,3 +5,11 @@ newenv/
  **/__pycache__/
 logs/
 *.pyc
+profile.sh
+ada.sh
+report1.nsys-rep
+report2.nsys-rep
+src/__pycache__/base_instance.cpython-311.pyc
+src/__pycache__/base_mesh.cpython-311.pyc
+src/__pycache__/globals.cpython-311.pyc
+src/__pycache__/step.cpython-311.pyc
