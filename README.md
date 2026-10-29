@@ -1,30 +1,62 @@
 # Fast Modal Dynamics for Hairy and Scaly Surfaces on the GPU
+**Yixin Lok, David I.W. Levin**
+SIGGRAPH Posters 2026
 
-https://dl.acm.org/doi/full/10.1145/3799825.3818761
-
+[Paper (ACM DL)](https://dl.acm.org/doi/full/10.1145/3799825.3818761)
 ![Demo](assets/cover.gif)
 
+Code for *Fast Modal Dynamics for Hairy and Scaly Surfaces on the GPU*.
 
-to credit:
-- simkit
-- tetwild
-- https://arxiv.org/abs/2403.06321
-- https://viterbi-web.usc.edu/~jbarbic/cuda-uUq/WangBarbic-CUDA-MIG-2020.pdf
-- https://arxiv.org/pdf/2408.10099
-- https://github.com/dilevin/usdmultimeshwriter
-- https://github.com/tytrusty/pba-assignment-cd
-- https://github.com/dilevin/CSC417-physics-based-animation/blob/master/lectures 07-fast-solvers.pdf
-- https://github.com/dilevin/CSC417-physics-based-animation?tab=readme-ov-file
+## Installation
+
+```bash
+git clone https://github.com/yixinlok/furry-frequencies.git
+cd furry-frequencies
+ 
+uv venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+uv pip install -r requirements.txt
+```
+
+## Running the code
+ 
+```bash
+python src/main.py
+```
+
+## Using your own meshes
+
+<p align="center">
+  <img src="assets/attach.png" alt="Attachment vertices and anchor faces" width="300">
+</p>
+The simulation requires the following input:
+
+- **SURFACE_STRUCTURE**: (hairs, scales, etc.) as a `.msh` file.
+- **BASE_MESH**: the structures sit on, as an `.obj` file.
+- **ATTACHMENT_VERTICES**: indices of the tet-mesh vertices that are pinned to the base mesh. `base_instance.py` provides an interface to select and save an array of attachment vertices.
+- **ANCHOR_FACES**: indices of the base-mesh triangles where anchor points are placed. `base_mesh.py` provides an interface to select and save an array of anchor faces.
 
 
-notes:
+These index lists can be very long, so they are set in `src/globals.py` rather than arguments on the command line. To use your own meshes, add these variables there. More details for other variables are also in `src/globals.py`.
 
-tetwild terminal command:
-./FloatTetwild_bin --input /Users/yixinlok/Desktop/empty2/loosecoil.obj --coarsen --manifold-surface
+## Acknowledgments
+ 
+This project builds on the following open-source work:
+ 
+- Linear elasticity Hessian code from [SimKit](https://github.com/otmanon/simkit)
+- USD export from [usdmultimeshwriter](https://github.com/dilevin/usdmultimeshwriter)
+- Tetrahedral meshes generated with [TetWild](https://github.com/Yixin-Hu/TetWild)
 
-slurm commands:
-srun --gres=gpu:1 -c 2 --mem=4G -t 60 --pty bash --login
-sbatch run.sh
-
-- when tetwilding, make sure the obj file from blender is triangulated
-  
+## Citation
+ 
+If you find this code useful, please cite:
+ 
+```bibtex
+@inproceedings{lok2026fastmodal,
+  title     = {Fast Modal Dynamics for Hairy and Scaly Surfaces on the GPU},
+  author    = {Lok, Yixin and Levin, David I.W.},
+  booktitle = {ACM SIGGRAPH 2026 Posters},
+  year      = {2026},
+  doi       = {10.1145/3799825.3818761}
+}
+```

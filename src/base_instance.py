@@ -244,7 +244,7 @@ if __name__ == "__main__":
     # instance = Instance(mesh_path="assets/single_leaf.msh", n_modes=6, pinned_vertices=[151])
     # instance.visualise_single_instance()
 
-    bi = create_base_instance(file_path="assets/scales.msh", n_modes=globals.N_MODES, scale=globals.INSTANCE_SCALE)
+    bi = create_base_instance(file_path="assets/scales.msh", n_modes=globals.N_MODES, scale=globals.STRUCTURE_SCALE)
     visualise_single_instance(bi)
     # visualise_single_instance(bi, pinned_vertices=PINNED_VERTICES["spring"])
 

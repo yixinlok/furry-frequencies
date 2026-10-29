@@ -21,7 +21,7 @@ class BaseMesh:
     acceleration_frames: list # precomputed vertex accelerations for each frame, in wp format
 
     faces_display: int
-    num_instance_per_face: int
+    num_structure_per_face: int
     
     def get_v_cur(self, frame_i):
         if frame_i < globals.MOVE_FRAMES:
@@ -62,7 +62,7 @@ def create_basemesh(vertices=None, faces=None, obj_path=None, select_faces=None)
     
     # bm.faces_display = 20
     bm.faces_display = bm.f.shape[0]
-    bm.num_instance_per_face = globals.NUM_INSTANCE_PER_FACE
+    bm.num_structure_per_face = globals.NUM_STRUCTURE_PER_FACE
 
     bm.resting_n = gp.per_face_normals(bm.resting_v,bm.f,unit_norm=True)
 

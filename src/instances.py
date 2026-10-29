@@ -87,7 +87,7 @@ def create_instances_object(
         normal = bm.resting_n[i] 
         rot_matrix = rotate_to_align_with_z(normal)
         # get face vertices
-        for j in range(bm.num_instance_per_face):
+        for j in range(bm.num_structure_per_face):
             face_indices.append(i)
             b1, b2, b3 = get_barycentric()
             barycentrics.append(np.array([b1, b2, b3]))

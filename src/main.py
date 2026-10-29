@@ -21,20 +21,24 @@ wp.init()
 setting up the base mesh (bm), base instance (bi) and instances object (ix)
 '''
 base_mesh_name = globals.BASE_MESH_NAME
-obj_path = OBJ_PATHS[base_mesh_name]
-select = OBJ_SELECT_FACES[base_mesh_name]
-bm = create_basemesh(obj_path=obj_path, select_faces=select)
+obj_path = BASE_MESH_PATHS[base_mesh_name]
+select = ANCHOR_FACES[base_mesh_name]
+tet_name = globals.STRUCTURE_NAME
+tet_path = STRUCTURE_PATHS[tet_name]
+pinned_vertices = ATTACHMENT_VERTICES[tet_name]
 
-tet_name = globals.TET_NAME
-tet_path = MSH_PATHS[tet_name]
-pinned_vertices = PINNED_VERTICES[tet_name]
-bi, precompute_time = create_base_instance(file_path=tet_path, n_modes=globals.N_MODES, pinned_vertices=pinned_vertices, scale=globals.INSTANCE_SCALE)
+
+bm = create_basemesh(obj_path=obj_path, select_faces=select)
+bi, precompute_time = create_base_instance(file_path=tet_path, n_modes=globals.N_MODES, pinned_vertices=pinned_vertices, scale=globals.STRUCTURE_SCALE)
 ix = create_instances_object(bm, bi)
 
 '''
 main algorithm
 '''
+# we precompute the frames for the base_mesh movement based on globals.MOVE
+# if you choose to upload animation file such as .fbx, rewrite the frames here
 precompute_bm_frames(bm, globals.MOVE_FRAMES, globals.MOVE)
+
 @nvtx.annotate()
 def advance_frame(frame_i):
     wp_update_all_instances(bm, bi, ix, frame_i)
